@@ -13,11 +13,10 @@ use Anik\Laravel\Centrifugo\Resolvers\ConnectionToken;
 use Anik\Laravel\Centrifugo\Resolvers\SubscriptionToken;
 use Illuminate\Broadcasting\BroadcastManager;
 use Illuminate\Container\Container;
-use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\ServiceProvider;
 
-class CentrifugoServiceProvider extends ServiceProvider implements DeferrableProvider
+class CentrifugoServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
