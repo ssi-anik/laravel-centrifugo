@@ -6,5 +6,5 @@ use Illuminate\Contracts\Auth\Authenticatable;
 
 interface SubscriptionToken
 {
-    public function token(?Authenticatable $user, array $config, ?string $channel): string;
+    public function token(?Authenticatable $user, array $config, ?string $channel): ?string;
 }
