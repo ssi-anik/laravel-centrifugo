@@ -30,7 +30,14 @@ class Centrifugo
             throw new CentrifugoException('Connection token provider must be an instance of ' . ConnectionToken::class);
         }
 
-        return $provider->token($user, $this->config);
+        $config = [
+            'secret_key' => $this->config['secret_key'],
+            'algorithm' => $this->config['algorithm'] ?? 'HS256',
+            'expiry' => $this->config['token']['connection']['expiry'] ?? null,
+            'allow_anonymous' => $this->config['token']['connection']['allow_anonymous'] ?? false,
+        ];
+
+        return $provider->token($user, $config);
     }
 
     public function subscriptionToken(?Authenticatable $user, ?string $channel): ?string
@@ -40,6 +47,13 @@ class Centrifugo
             throw new CentrifugoException('Subscription token provider must be an instance of ' . SubscriptionToken::class);
         }
 
-        return $provider->token($user, $this->config, $channel);
+        $config = [
+            'secret_key' => $this->config['secret_key'],
+            'algorithm' => $this->config['algorithm'] ?? 'HS256',
+            'expiry' => $this->config['token']['subscription']['expiry'] ?? null,
+            'allow_anonymous' => $this->config['token']['subscription']['allow_anonymous'] ?? false,
+        ];
+
+        return $provider->token($user, $config, $channel);
     }
 }

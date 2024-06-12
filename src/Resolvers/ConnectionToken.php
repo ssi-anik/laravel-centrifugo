@@ -19,16 +19,16 @@ class ConnectionToken implements ConnectionTokenContract
         $key = $config['secret_key'];
         $algorithm = $config['algorithm'] ?? 'HS256';
 
-        $subject = method_exists($user, 'centrifugoUserIdentifier')
-            ? $user->centrifugoUserIdentifier()
-            : $user->getAuthIdentifier();
-
         $payload = [
             'iat' => strtotime('now'),
-            'sub' => $subject,
         ];
+        if (!is_null($user)) {
+            $payload['sub'] = method_exists($user, 'centrifugoUserIdentifier')
+                ? $user->centrifugoUserIdentifier()
+                : $user->getAuthIdentifier();
+        }
 
-        $expiry = $config['token']['connection']['expiry'] ?? null;
+        $expiry = $config['expiry'] ?? null;
         if (!is_null($expiry)) {
             $payload['exp'] = strtotime($expiry);
         }

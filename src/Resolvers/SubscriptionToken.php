@@ -33,7 +33,7 @@ class SubscriptionToken implements SubscriptionTokenContract
             'channel' => $channel,
         ];
 
-        $expiry = $config['token']['subscription']['expiry'] ?? null;
+        $expiry = $config['expiry'] ?? null;
         if (!is_null($expiry)) {
             $payload['exp'] = strtotime($expiry);
         }
