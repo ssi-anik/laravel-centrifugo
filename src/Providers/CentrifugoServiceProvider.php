@@ -58,7 +58,7 @@ class CentrifugoServiceProvider extends ServiceProvider
     protected function extendBroadcasting(): void
     {
         $this->app->make(BroadcastManager::class)->extend('centrifugo', function (Container $app, array $config) {
-            return new CentrifugoBroadcaster($app->make(CentrifugoManager::class), $config['connection']);
+            return new CentrifugoBroadcaster($app->make(CentrifugoManager::class), $config['connection'] ?? null);
         });
     }
 
