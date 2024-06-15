@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Anik\Laravel\Centrifugo;
 
+use Anik\Laravel\Centrifugo\Contacts\Centrifugo;
+use Anik\Laravel\Centrifugo\Versions\V3\Centrifugo as CentrifugoV3;
+use Anik\Laravel\Centrifugo\Versions\V4\Centrifugo as CentrifugoV4;
+use Anik\Laravel\Centrifugo\Versions\V5\Centrifugo as CentrifugoV5;
 use Illuminate\Container\Container;
 use InvalidArgumentException;
 
@@ -32,7 +36,16 @@ class CentrifugoManager
             throw new InvalidArgumentException("Centrifugo connection [{$name}] is not defined.");
         }
 
-        return new Centrifugo($config);
+        $version = $config['version'] ?? 'v5';
+        if ($version === 'v3') {
+            $class = CentrifugoV3::class;
+        } elseif ($version === 'v4') {
+            $class = CentrifugoV4::class;
+        } else {
+            $class = CentrifugoV5::class;
+        }
+
+        return app()->make($class, ['config' => $config]);
     }
 
     public function __call($method, $parameters)

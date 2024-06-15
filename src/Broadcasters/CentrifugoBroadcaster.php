@@ -49,6 +49,7 @@ class CentrifugoBroadcaster extends Broadcaster
 
     public function broadcast(array $channels, $event, array $payload = [])
     {
+        $this->manager->connection($this->connection)->broadcast($channels, ['event' => $event, 'data' => $payload]);
     }
 
     public function resolveAuthenticatedUser($request)
