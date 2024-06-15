@@ -106,7 +106,10 @@ class Centrifugo implements CentrifugoContract
         $broadcast = app($this->getBroadcastClass(), ['channels' => $channels, 'data' => $data]);
         $client = new Client(['base_uri' => $this->config['host'],]);
 
-        (new ServerApi($client, $this->authorizationResolver()))->operation($broadcast);
+        (new ServerApi(
+            $client,
+            app($this->authorizationResolver(), ['apiKey' => $this->config['api_key']])
+        ))->operation($broadcast);
     }
 
     public function publish(string $channel, array $data): void
@@ -114,6 +117,9 @@ class Centrifugo implements CentrifugoContract
         $publish = app($this->getPublishClass(), ['channel' => $channel, 'data' => $data]);
         $client = new Client(['base_uri' => $this->config['host'],]);
 
-        (new ServerApi($client, $this->authorizationResolver()))->operation($publish);
+        (new ServerApi(
+            $client,
+            app($this->authorizationResolver(), ['apiKey' => $this->config['api_key']])
+        ))->operation($publish);
     }
 }
