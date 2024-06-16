@@ -86,7 +86,7 @@ class Centrifugo implements CentrifugoContract
             return false;
         }
 
-        $channels = Arr::wrap($notifiable->routeNotificationForCentrifugo($notifiable));
+        $channels = Arr::wrap($notifiable->routeNotificationForCentrifugo($notification));
 
         $data = method_exists($notification, 'toCentrifugo')
             ? $notification->toCentrifugo($notifiable)
