@@ -103,8 +103,9 @@ class Centrifugo implements CentrifugoContract
 
     public function broadcast(array $channels, array $data): void
     {
+        $channels = array_map(fn($channel) => (string) $channel, $channels);
         $broadcast = app($this->getBroadcastClass(), ['channels' => $channels, 'data' => $data]);
-        $client = new Client(['base_uri' => $this->config['host'],]);
+        $client = new Client(['base_uri' => sprintf('%s:%d', $this->config['host'], $this->config['port']),]);
 
         (new ServerApi(
             $client,
@@ -115,7 +116,7 @@ class Centrifugo implements CentrifugoContract
     public function publish(string $channel, array $data): void
     {
         $publish = app($this->getPublishClass(), ['channel' => $channel, 'data' => $data]);
-        $client = new Client(['base_uri' => $this->config['host'],]);
+        $client = new Client(['base_uri' => sprintf('%s:%d', $this->config['host'], $this->config['port']),]);
 
         (new ServerApi(
             $client,
