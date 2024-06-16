@@ -18,6 +18,7 @@ class CentrifugoChannel
 
     public function send($notifiable, Notification $notification)
     {
+        $this->manager->connection()->send($notifiable, $notification);
     }
 
     protected function getData($notifiable, Notification $notification): array
