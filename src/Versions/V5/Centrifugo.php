@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Anik\Laravel\Centrifugo\Versions\V5;
 
 use Anik\Centrifugo\Methods\V5\Broadcast;
+use Anik\Centrifugo\Methods\V5\Presence;
+use Anik\Centrifugo\Methods\V5\PresenceStats;
 use Anik\Centrifugo\Methods\V5\Publish;
 use Anik\Centrifugo\Server\V5;
 use Anik\Laravel\Centrifugo\Versions\V4\Centrifugo as CentrifugoV4;
@@ -24,5 +26,15 @@ class Centrifugo extends CentrifugoV4
     protected function getBroadcastClass(): string
     {
         return Broadcast::class;
+    }
+
+    protected function getPresenceClass(): string
+    {
+        return Presence::class;
+    }
+
+    protected function getPresenceStatsClass(): string
+    {
+        return PresenceStats::class;
     }
 }

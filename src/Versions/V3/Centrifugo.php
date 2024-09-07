@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Anik\Laravel\Centrifugo\Versions\V3;
 
 use Anik\Centrifugo\Methods\V3\Broadcast;
+use Anik\Centrifugo\Methods\V3\Presence;
+use Anik\Centrifugo\Methods\V3\PresenceStats;
 use Anik\Centrifugo\Methods\V3\Publish;
 use Anik\Centrifugo\Server\V3;
 use Anik\Centrifugo\ServerApi;
@@ -39,6 +41,16 @@ class Centrifugo implements CentrifugoContract
     protected function getBroadcastClass(): string
     {
         return Broadcast::class;
+    }
+
+    protected function getPresenceClass(): string
+    {
+        return Presence::class;
+    }
+
+    protected function getPresenceStatsClass(): string
+    {
+        return PresenceStats::class;
     }
 
     public function getConfig(): array
@@ -122,5 +134,27 @@ class Centrifugo implements CentrifugoContract
             $client,
             app($this->authorizationResolver(), ['apiKey' => $this->config['api_key']])
         ))->operation($publish);
+    }
+
+    public function presence(string $channel): void
+    {
+        $presence = app($this->getPresenceClass(), ['channel' => $channel,]);
+        $client = new Client(['base_uri' => sprintf('%s:%d', $this->config['host'], $this->config['port']),]);
+
+        (new ServerApi(
+            $client,
+            app($this->authorizationResolver(), ['apiKey' => $this->config['api_key']])
+        ))->operation($presence);
+    }
+
+    public function presenceStats(string $channel): void
+    {
+        $presenceStats = app($this->getPresenceStatsClass(), ['channel' => $channel,]);
+        $client = new Client(['base_uri' => sprintf('%s:%d', $this->config['host'], $this->config['port']),]);
+
+        (new ServerApi(
+            $client,
+            app($this->authorizationResolver(), ['apiKey' => $this->config['api_key']])
+        ))->operation($presenceStats);
     }
 }
