@@ -8,6 +8,7 @@ use Anik\Centrifugo\Methods\V3\Broadcast;
 use Anik\Centrifugo\Methods\V3\Presence;
 use Anik\Centrifugo\Methods\V3\PresenceStats;
 use Anik\Centrifugo\Methods\V3\Publish;
+use Anik\Centrifugo\Response;
 use Anik\Centrifugo\Server\V3;
 use Anik\Centrifugo\ServerApi;
 use Anik\Laravel\Centrifugo\Contacts\Centrifugo as CentrifugoContract;
@@ -136,23 +137,23 @@ class Centrifugo implements CentrifugoContract
         ))->operation($publish);
     }
 
-    public function presence(string $channel): void
+    public function presence(string $channel): Response
     {
         $presence = app($this->getPresenceClass(), ['channel' => $channel,]);
         $client = new Client(['base_uri' => sprintf('%s:%d', $this->config['host'], $this->config['port']),]);
 
-        (new ServerApi(
+        return (new ServerApi(
             $client,
             app($this->authorizationResolver(), ['apiKey' => $this->config['api_key']])
         ))->operation($presence);
     }
 
-    public function presenceStats(string $channel): void
+    public function presenceStats(string $channel): Response
     {
         $presenceStats = app($this->getPresenceStatsClass(), ['channel' => $channel,]);
         $client = new Client(['base_uri' => sprintf('%s:%d', $this->config['host'], $this->config['port']),]);
 
-        (new ServerApi(
+        return (new ServerApi(
             $client,
             app($this->authorizationResolver(), ['apiKey' => $this->config['api_key']])
         ))->operation($presenceStats);
